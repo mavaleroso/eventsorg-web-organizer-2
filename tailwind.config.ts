@@ -6,6 +6,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     './node_modules/preline/preline.js',
+    'node_modules/preline/dist/*.js',
   ],
   darkMode: "class",
   theme: {

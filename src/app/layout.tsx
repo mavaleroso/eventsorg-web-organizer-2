@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import PrelineScript from "./components/PrelineScript";
 import { Toaster } from "react-hot-toast";
-import DefaultLayout from "./components/DefaultLayout";
+import Home from "./components/BaseLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Toaster position="top-center" reverseOrder={false} />
-        <DefaultLayout>{children}</DefaultLayout>
-        <PrelineScript />
+        <Home>{children}</Home>
       </body>
+      <PrelineScript />
     </html>
   );
 }

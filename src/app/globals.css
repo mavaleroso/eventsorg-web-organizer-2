@@ -31,3 +31,7 @@ body {
     text-wrap: balance;
   }
 }
+
+.rbc-calendar {
+  height: 100vh !important;
+}
