@@ -10,7 +10,10 @@ export default function Home({ children }: { children: React.ReactNode }) {
   const token = store.get("accessToken");
 
   useEffect(() => {
-    if (pathname.includes("/login")) {
+    if (!pathname.includes("/login")) {
+      if(!token) {
+        router.push('/login');
+      }
     }
   }, []);
 

@@ -1,10 +1,10 @@
 "use client";
 
 import { ZodError, z } from "zod";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 //@ts-ignore
 import store from "store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { login } from "../services/authentication/api";
 
@@ -26,13 +26,23 @@ interface FormData {
 }
 
 const LoginPage = () => {
+  const pathname = usePathname();
   const router = useRouter();
   const token = store.get("accessToken");
   const [isLoading, setIsLoading] = useState(false);
+  const [invalidError, setInvalidError] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    if (pathname.includes("/login")) {
+      if (token) {
+        router.push("/events");
+      }
+    }
+  }, []);
 
   const [validationErrors, setValidationErrors] = useState<ZodError | null>(null);
 
@@ -43,6 +53,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setInvalidError(false);
 
     try {
       setIsLoading(true);
@@ -58,6 +69,7 @@ const LoginPage = () => {
 
       setIsLoading(false);
     } catch (error) {
+      setInvalidError(true);
       if (error instanceof ZodError) {
         setValidationErrors(error);
         console.error("Form validation failed:", error.errors);
@@ -76,6 +88,14 @@ const LoginPage = () => {
                 <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">EventsOrg</h1>
                 <p className="text-gray-400 text-sm">Login to access the app</p>
               </div>
+              {invalidError && (
+                <div
+                  className="bg-red-100 my-5 border border-red-200 text-sm text-red-800 rounded-lg p-4 dark:bg-red-800/10 dark:border-red-900 dark:text-red-500"
+                  role="alert"
+                >
+                  <span className="font-bold">Invalid</span> username or password. Try again
+                </div>
+              )}
               <div className="mt-5">
                 <form onSubmit={handleSubmit}>
                   <div className="grid gap-y-4">

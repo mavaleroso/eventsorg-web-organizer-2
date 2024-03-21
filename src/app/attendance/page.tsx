@@ -10,6 +10,8 @@ import { getEvents } from "../services/events/api";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import Table from "../components/Table";
+import toast from "react-hot-toast";
+import { logout } from "../services/authentication/api";
 
 const AttendancePage = () => {
   const router = useRouter();
@@ -101,6 +103,13 @@ const AttendancePage = () => {
       }
     } catch (error) {
       console.log("Fetch events error: ", error);
+      //@ts-ignore
+      if (error?.response?.status == 401) {
+        let res = await logout()
+        toast.error('UnAuthenticated.')
+        store.clearAll();
+        router.push('/login')
+      }
     }
   };
 
@@ -120,13 +129,13 @@ const AttendancePage = () => {
       });
     } catch (error) {
       console.log("error: ", error);
-      // if (error?.response?.status == 401) {
-      // let res = await  outLogin()
-      // message.error('UnAuthenticated.')
-      // store.remove('accessToken');
-      // history.push('/')
-
-      // }
+      //@ts-ignore
+      if (error?.response?.status == 401) {
+        let res = await logout()
+        toast.error('UnAuthenticated.')
+        store.clearAll();
+        router.push('/login')
+      }
     }
     setLoading(false);
   };

@@ -13,9 +13,11 @@ import { Dialog } from "@headlessui/react";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
+//@ts-ignore
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { logout } from "../services/authentication/api";
 
 const localizer = momentLocalizer(moment);
 
@@ -241,16 +243,23 @@ const EventsPage = () => {
   function handleFormatEvents() {
     let eventLists: { key: number; id: any; title: any; location: any; start: Date; end: Date }[] = [];
     tableData?.map((item, key) => {
+      // @ts-ignore
       var isafter = moment(item?.start_date).isSameOrAfter(moment().format("YYYY-MM-DD"));
+      // @ts-ignore
       var isBefore = moment(item?.end_date).isSameOrAfter(moment().format("YYYY-MM-DD"));
 
       if (isafter || isBefore) {
         let obj = {
           key: key,
+          // @ts-ignore
           id: item?.id,
+          // @ts-ignore
           title: item?.name,
+          // @ts-ignore
           location: item?.location,
+          // @ts-ignore
           start: new Date(Date.parse(item?.start_date)),
+          // @ts-ignore
           end: new Date(Date.parse(item?.end_date)),
         };
         eventLists.push(obj);
@@ -281,6 +290,13 @@ const EventsPage = () => {
       });
     } catch (error) {
       console.log("error: ", error);
+      //@ts-ignore
+      if (error?.response?.status == 401) {
+        let res = await logout();
+        toast.error("UnAuthenticated.");
+        store.clearAll();
+        router.push("/login");
+      }
     }
     setLoading(false);
   };
@@ -293,6 +309,13 @@ const EventsPage = () => {
       toast.dismiss();
     } catch (error) {
       console.log("Fetch event", error);
+      //@ts-ignore
+      if (error?.response?.status == 401) {
+        let res = await logout();
+        toast.error("UnAuthenticated.");
+        store.clearAll();
+        router.push("/login");
+      }
     }
     setIsNew(false);
     setModalState(true);
@@ -331,6 +354,13 @@ const EventsPage = () => {
       if (error instanceof ZodError) {
         setValidationErrors(error);
         console.error("Form validation failed:", error.errors);
+        //@ts-ignore
+        if (error?.response?.status == 401) {
+          let res = await logout();
+          toast.error("UnAuthenticated.");
+          store.clearAll();
+          router.push("/login");
+        }
       }
     }
   };
@@ -355,6 +385,13 @@ const EventsPage = () => {
         // Handle validation errors
         setValidationErrors(error);
         console.error("Form validation failed:", error.errors);
+        //@ts-ignore
+        if (error?.response?.status == 401) {
+          let res = await logout();
+          toast.error("UnAuthenticated.");
+          store.clearAll();
+          router.push("/login");
+        }
       }
     }
   };
@@ -375,6 +412,13 @@ const EventsPage = () => {
       handleGetEvents(formFilterData);
     } catch (error) {
       console.log("delete user error", error);
+      //@ts-ignore
+      if (error?.response?.status == 401) {
+        let res = await logout();
+        toast.error("UnAuthenticated.");
+        store.clearAll();
+        router.push("/login");
+      }
     }
   };
 

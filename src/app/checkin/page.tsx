@@ -17,6 +17,7 @@ import QrReader from "react-web-qr-reader";
 import toast from "react-hot-toast";
 import { postAttendance } from "../services/checkin/api";
 import Modal from "../components/Modal";
+import { logout } from "../services/authentication/api";
 
 const CheckinPage = () => {
   const router = useRouter();
@@ -100,23 +101,6 @@ const CheckinPage = () => {
     });
   }, []);
 
-  //   const handleGetEvents = async (params: any) => {
-  //     try {
-  //       let res = await getEvents(params);
-  //       setEvents(res?.data?.data);
-
-  //       if (res?.data?.data) {
-  //         handleGetAttendance({
-  //           ...formFilterData,
-  //           eventId: res?.data?.data[0]?.id,
-  //         });
-  //         setSelected(res?.data?.data[0]);
-  //       }
-  //     } catch (error) {
-  //       console.log("Fetch events error: ", error);
-  //     }
-  //   };
-
   const handleGetAttendance = async (params: any) => {
     setLoading(true);
     setTableData([]);
@@ -133,13 +117,13 @@ const CheckinPage = () => {
       });
     } catch (error) {
       console.log("error: ", error);
-      // if (error?.response?.status == 401) {
-      // let res = await  outLogin()
-      // message.error('UnAuthenticated.')
-      // store.remove('accessToken');
-      // history.push('/')
-
-      // }
+      //@ts-ignore
+      if (error?.response?.status == 401) {
+        let res = await logout()
+        toast.error('UnAuthenticated.')
+        store.clearAll();
+        router.push('/login')
+      }
     }
     setLoading(false);
   };
@@ -163,6 +147,13 @@ const CheckinPage = () => {
       }
     } catch (error) {
       console.log("Fetch events error: ", error);
+      //@ts-ignore
+      if (error?.response?.status == 401) {
+        let res = await logout()
+        toast.error('UnAuthenticated.')
+        store.clearAll();
+        router.push('/login')
+      }
     }
   };
 
