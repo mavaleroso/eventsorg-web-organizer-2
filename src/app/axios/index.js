@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { toast } from 'react-hot-toast';
 
-const NEXT_PUBLIC_APP_API_URL = process.env.NEXT_PUBLIC_APP_API_URL;
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const instance = axios.create({
-    baseURL: NEXT_PUBLIC_APP_API_URL
+    baseURL: NEXT_PUBLIC_API_URL
 })
 
 instance.interceptors.response.use(function (response) {
@@ -27,5 +27,5 @@ instance.interceptors.response.use(function (response) {
     return Promise.reject(error)
 });
 
-export { NEXT_PUBLIC_APP_API_URL }
+export { NEXT_PUBLIC_API_URL }
 export default instance

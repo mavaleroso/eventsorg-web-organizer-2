@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { logout } from "@/app/services/authentication/api";
 //@ts-ignore
 import store from "store";
+import Link from "next/link";
 export default function Home({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -11,8 +12,8 @@ export default function Home({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!pathname.includes("/login")) {
-      if(!token) {
-        router.push('/login');
+      if (!token) {
+        router.push("/login");
       }
     }
   }, []);
@@ -231,7 +232,7 @@ export default function Home({ children }: { children: React.ReactNode }) {
                   </svg>
                 </li>
                 <li className="text-sm font-semibold text-gray-800 truncate dark:text-gray-400" aria-current="page">
-                  {pathname.replace(/^\//, '').replace(/^[a-z]/, match => match.toUpperCase())}
+                  {pathname.replace(/^\//, "").replace(/^[a-z]/, (match) => match.toUpperCase())}
                 </li>
               </ol>
             </div>
@@ -253,8 +254,8 @@ export default function Home({ children }: { children: React.ReactNode }) {
 
             <nav className="hs-accordion-group p-6 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
               <ul className="space-y-1.5">
-              <li>
-                  <a
+                <li>
+                  <Link
                     className={`flex items-center gap-x-3 py-2 px-2.5  text-sm  rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 ${
                       pathname == "/events" ? "bg-gray-700 text-white" : "text-gray-400"
                     }`}
@@ -284,11 +285,11 @@ export default function Home({ children }: { children: React.ReactNode }) {
                       <path d="M16 18h.01" />
                     </svg>
                     Events
-                  </a>
+                  </Link>
                 </li>
 
                 <li>
-                  <a
+                  <Link
                     className={`flex items-center gap-x-3 py-2 px-2.5  text-sm  rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 ${
                       pathname == "/checkin" ? "bg-gray-700 text-white" : "text-gray-400"
                     }`}
@@ -314,10 +315,10 @@ export default function Home({ children }: { children: React.ReactNode }) {
                       />
                     </svg>
                     Check-in
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     className={`flex items-center gap-x-3 py-2 px-2.5  text-sm  rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 ${
                       pathname == "/attendance" ? "bg-gray-700 text-white" : "text-gray-400"
                     }`}
@@ -339,7 +340,7 @@ export default function Home({ children }: { children: React.ReactNode }) {
                       <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                     </svg>
                     Attendance
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>
